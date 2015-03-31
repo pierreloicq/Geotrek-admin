@@ -10,68 +10,20 @@
 <script type="text/javascript" src="{% static "core/jquery.aSimpleTour.js" %}"></script>
 
 <script type="text/javascript">
-  if (window.location.pathname == '/path/list/') {
-    if (localStorage.getItem("/path/list/1") != 'false') {
-      $(document).ready(function() {
-        options = {
-          data : [
-            { element: '#objects-list', 'tooltip' : 'Nous avons déjà ajouté certains tronçons sur votre territoire', position : 'R'},
-            { element: '.btn.btn-success:last', 'tooltip' : 'Ce bouton permet d\'ajouter un nouveau tronçon'},
-            {'tooltip' : 'Ce bouton permet d\'ajouter un nouveau tronçon'}
-          ],
-          welcomeMessage: 'Bienvenue dans Geotrek ! Suivez ce guide pour découvrir les fonctionnalités principales de l\'application. Pendant cette introduction, vous n\'avez pas à écrire de texte ou à cliquer sur la carte : cliquez simplement sur "Suivant" à chaque étape.',
-          controlsPosition: 'BL',
-          buttons: { next : 'Suivant &rarr;', prev : '&larr; Précédent', start : 'Suivre le guide', end: 'Quitter' }
-        };
-        $.aSimpleTour(options);
-      });
-    };
-    if (localStorage.getItem("/path/list/2") != 'false') {
-      $(document).ready(function() {
-        options = {
-          data : [
-            { element: 'a[href="/trek/list/"]:last', 'tooltip' : 'Allons maintenant voir les itinéraires', position : 'R'},
-            { 'tooltip' : 'Allons maintenant voir les itinéraires', position : 'R'}
-          ],
-          welcomeMessage: 'Le tronçon ajouté apparaitra dans la liste',
-          controlsPosition: 'BL',
-          buttons: { next : 'Suivant &rarr;', prev : '&larr; Précédent', start : 'Continuer', end: 'Quitter' }
-        };
-        $.aSimpleTour(options);
-      });
-    };
-  };
-  if (window.location.pathname == '/path/add/') {
-    if (localStorage.getItem("/path/add/1") != 'false') {
-      $(document).ready(function() {
-        options = {
-          data : [
-            { element: '#modelfields', 'tooltip' : 'Renseignez ses différentes caratéristiques', position : 'R'},
-            { element: '.leaflet-draw-draw-polyline', 'tooltip' : 'Puis cliquez sur ce bouton pour dessiner une nouvelle ligne', position : 'R'},
-            { element: '.btn.btn-success:last', 'tooltip' : 'Une fois les caractéristiques remplies et le tronçon dessiné, cliquez sur Créer pour l\'ajouter', position : 'L'},
-            { 'tooltip' : 'Une fois les caractéristiques remplies et le tronçon dessiné, cliquez sur Créer pour l\'ajouter', position : 'L'}
-          ],
-          welcomeMessage: 'Vous voici dans l\'interface d\'ajout d\'un tronçon',
-          controlsPosition: 'BL',
-          buttons: { next : 'Suivant &rarr;', prev : '&larr; Précédent', start : 'Continuer', end: 'Quitter' }
-        };
-        $.aSimpleTour(options);
-      });
-    };
-  };
   if (window.location.pathname == '/trek/list/') {
     if (localStorage.getItem("/trek/list/1") != 'false') {
       console.log(localStorage.getItem("/trek/list/1"));
       $(document).ready(function() {
         options = {
           data : [
-            { element: '#filters-btn', 'tooltip' : 'Vous pouvez les filtrer suivant différents critères', position : 'R'},
-            { element: '.btn.btn-success:last', 'tooltip' : 'Cliquer sur ce bouton pour ajouter un nouvel itinéraire'},
-            { 'tooltip' : 'Cliquer sur ce bouton pour ajouter un nouvel itinéraire'}
+            { element: '#objects-list', 'tooltip' : 'Nous avons déjà dessiné certains itinéraires sur votre territoire', position : 'R'},
+            { element: '#objects-list', 'tooltip' : 'Ce module permet de décrire les itinéraires de l’offre de randonnée pour le grand public, d’associer des illustrations et de gérer les contenus par langue. Il permet aussi d’ajouter des liens web, des fichiers sons et vidéos.', position : 'R'},
+            { element: '.btn.btn-success:last', 'tooltip' : 'Ce bouton permet d\'ajouter un nouvel itinéraire'},
+            { 'tooltip' : 'Ce bouton permet d\'ajouter un nouvel itinéraire'}
           ],
-          welcomeMessage: 'Les itinéraires utilisent le réseau de tronçons que nous avons vu précédemment',
+          welcomeMessage: 'Suivez ce guide pour découvrir les fonctionnalités principales de l\'application. Pendant cette introduction, vous n\'avez pas à écrire de texte ou à cliquer sur la carte : cliquez simplement sur "Suivant" à chaque étape.',
           controlsPosition: 'BL',
-          buttons: { next : 'Suivant &rarr;', prev : '&larr; Précédent', start : 'Continuer', end: 'Quitter' }
+          buttons: { next : 'Suivant &rarr;', prev : '&larr; Précédent', start : 'Suivant &rarr', end: 'Quitter' }
         };
         $.aSimpleTour(options);
       });
@@ -80,12 +32,14 @@
       $(document).ready(function() {
         options = {
           data : [
-            { element: '#historylist', 'tooltip' : 'Les POI'},
-            { element: '.btn.btn-success:last', 'tooltip' : 'Les POI'}
+            { element: '.odd:first', 'tooltip' : 'En sélectionnant un itinéraire déjà créé, vous accédez à l’ensemble des éléments saisis'},
+            { element: '.odd:first', 'tooltip' : 'Vous pourrez modifier toutes les informations préalablement saisies ainsi que les tracés'},
+            { element: 'a[href="/poi/list/"]:last', 'tooltip' : 'Allons maintenant voir les POIs', position : 'R'},
+            { 'tooltip' : 'Allons maintenant voir les POIs'}
           ],
-          welcomeMessage: 'Nouvel iti',
+          welcomeMessage: 'Le nouvel itinéraire sera créé et apparaitra dans la liste.',
           controlsPosition: 'BL',
-          buttons: { next : 'Suivant &rarr;', prev : '&larr; Précédent', start : 'Continuer', end: 'Quitter' }
+          buttons: { next : 'Suivant &rarr;', prev : '&larr; Précédent', start : 'Suivant &rarr', end: 'Quitter' }
         };
         $.aSimpleTour(options);
       });
@@ -97,15 +51,41 @@
         options = {
           data : [
             { element: '#modelfields', 'tooltip' : 'Différents champs permettent de renseigner les caractéristiques des itinéraires.', position : 'R'},
-            { element: '.nav-pills:first', 'tooltip' : 'Ils peuvent être décrits en plusieurs langues, qui seront utilisées sur le portail randonnée.', position : 'R'},
-            { element: '.linetopology-control', 'tooltip' : 'Sur la carte, ce bouton permet de dessiner un itinéraire qui s\'appuyera sur le réseau de tronçons.', position : 'R'},
+            { element: '.nav-pills:first', 'tooltip' : 'Ils peuvent être décrits en plusieurs langues, qui seront utilisées sur le portail randonnée "Geotrek-Rando".', position : 'R'},
+            { element: '.leaflet-draw-draw-polyline', 'tooltip' : 'Sur la carte, ce bouton permet de dessiner un itinéraire.', position : 'R'},
             { element: '.leaflet-draw-draw-marker:first', 'tooltip' : 'Ce bouton permet d\'ajouter des points de référence sur la carte, qui pourront être utilisés dans la description pour les étapes importantes de l\'itinéraire.', position : 'R'},
             { element: '.btn.btn-success:last', 'tooltip' : 'Une fois les caractéristiques remplies et l\'itinéraire dessiné, cliquez sur Créer pour l\'ajouter.', position : 'L'},
-            { 'tooltip' : 'Une fois les caractéristiques remplies et l\'itinéraire dessiné, cliquez sur Créer pour l\'ajouter.', position : 'L'}
+            { 'tooltip' : 'Une fois les caractéristiques remplies et l\'itinéraire dessiné, vous pourrez cliquer sur Créer pour l\'ajouter.', position : 'L'}
           ],
-          welcomeMessage: 'Vous voici dans l\'interface d\'ajout d\'un itinéraire',
+          welcomeMessage: 'Vous voici dans l\'interface pour ajouter, dessiner un itinéraire',
           controlsPosition: 'BL',
-          buttons: { next : 'Suivant &rarr;', prev : '&larr; Précédent', start : 'Continuer', end: 'Quitter' }
+          buttons: { next : 'Suivant &rarr;', prev : '&larr; Précédent', start : 'Suivant &rarr', end: 'Quitter' }
+        };
+        $.aSimpleTour(options);
+      });
+    };
+  };
+  if (window.location.pathname == '/poi/list/') {
+    if (localStorage.getItem("/poi/list/1") != 'false') {
+      $(document).ready(function() {
+        options = {
+          data : [
+            { element: '#objects-list', 'tooltip' : 'Cela permet de localiser et de décrire les patrimoines à valoriser le long des itinéraires (nom, type, description et photos).', position : 'R'},
+            { element: '#objects-list', 'tooltip' : 'Ils sont publiés par langue.', position : 'R'},
+            { element: 'a[href="/touristiccontent/list/"]:last', 'tooltip' : 'Module Activités touristiques', position : 'R'},
+            { element: 'a[href="/touristiccontent/list/"]:last', 'tooltip' : 'Cela permet de localiser et de décrire les activités touristiques du territoire.', position : 'R'},
+            { element: 'a[href="/touristiccontent/list/"]:last', 'tooltip' : 'Diverses catégories sont proposées (hébergement, restauration, …)', position : 'R'},
+            { element: 'a[href="/touristicevent/list/"]:last', 'tooltip' : 'Module Évènements touristiques', position : 'R'},
+            { element: 'a[href="/touristicevent/list/"]:last', 'tooltip' : 'Permet de créer tout évènement culturel en précisant les dates, la durée, le lieu, son descriptif etc.', position : 'R'},
+            { element: '.nav.pull-right:last', 'tooltip' : 'Via un compte “administrateur” vous avez la possibilité de paramétrer l’ensemble des champs, listes etc. composant les menus', position : 'L'},
+            { element: '#filters-btn', 'tooltip' : 'Vous avez la possibilité d\'effectuer des recherches à travers différents filtres', position : 'R'},
+            { element: '.leaflet-control-layers-toggle:last', 'tooltip' : 'La légende vous donne la possibilité d’activer ou non les couches d’informations. Différents fonds de plan peuvent être disponibles : OSM, IGN, ortho…', position : 'L'},
+            { element: '#list-download-toolbar', 'tooltip' : 'Possibilité d’exporter les données en CSV ou Shapefile ou GPX', position : 'R', controlsPosition: 'BR'},
+            { element: '#objects-list_filter', 'tooltip' : 'Ou d’effectuer une recherche', position : 'T', controlsPosition: 'BR'},
+          ],
+          welcomeMessage: 'Retrouvez les mêmes fonctionnalités pour saisir vos POIs',
+          controlsPosition: 'BL',
+          buttons: { next : 'Suivant &rarr;', prev : '&larr; Précédent', start : 'Suivant &rarr', end: 'Quitter' }
         };
         $.aSimpleTour(options);
       });

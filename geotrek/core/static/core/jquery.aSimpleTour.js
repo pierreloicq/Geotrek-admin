@@ -86,39 +86,15 @@
       step++;
       console.log(step);
 
-      if (window.location.pathname == '/path/list/') {
-        if (localStorage.getItem("/path/list/2") != 'false' && localStorage.getItem("/path/list/1") == 'false') {
-          if (step == "1") {
-            window.location.replace(window.location.origin + '/trek/list');
-            localStorage.setItem("/path/list/2", 'false');
-          };
-        };
-        if (localStorage.getItem("/path/list/1") != 'false') {
-          if (step == "2") {
-            window.location.replace(window.location.origin + '/path/add');
-            localStorage.setItem("/path/list/1", 'false');
-          };
-        }
-      };
-
-      if (window.location.pathname == '/path/add/') {
-        if (localStorage.getItem("/path/add/1") != 'false') {
-          if (step == "3") {
-            window.location.replace(window.location.origin + '/path/list');
-            localStorage.setItem("/path/add/1", 'false');
-          };
-        }
-      };
-
       if (window.location.pathname == '/trek/list/') {
         if (localStorage.getItem("/trek/list/2") != 'false' && localStorage.getItem("/trek/list/1") == 'false') {
-          if (step == "1") {
-            window.location.replace(window.location.origin + '/poi/list');
+          if (step == "3") {
+            window.location.replace(window.location.origin + '/poi/list/');
             localStorage.setItem("/trek/list/2", 'false');
           };
         }
         if (localStorage.getItem("/trek/list/1") != 'false') {
-          if (step == "2") {
+          if (step == "3") {
             window.location.replace(window.location.origin + '/trek/add');
             localStorage.setItem("/trek/list/1", 'false');
           };
@@ -130,6 +106,14 @@
           if (step == "5") {
             window.location.replace(window.location.origin + '/trek/list');
             localStorage.setItem("/trek/add/1", 'false');
+          };
+        }
+      };
+
+      if (window.location.pathname == '/poi/list/') {
+        if (localStorage.getItem("/poi/list/1") != 'false') {
+          if (step == "12") {
+            localStorage.setItem("/poi/list/1", 'false');
           };
         }
       };
