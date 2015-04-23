@@ -31,6 +31,10 @@
     border-bottom: 4px solid #97BB35;
 }
 
+#nav a.lang {
+    float: right;
+}
+
 .owl-carousel .item img{
     display: block;
     width: 100%;
