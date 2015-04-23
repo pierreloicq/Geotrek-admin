@@ -31,7 +31,7 @@
     border-bottom: 4px solid #97BB35;
 }
 
-#nav a.lang {
+#nav li.lang {
     float: right;
 }
 
