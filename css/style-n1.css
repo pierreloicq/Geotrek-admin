@@ -42,53 +42,6 @@
 /* Header                                                                        */
 /*********************************************************************************/
 
-	#logo
-	{
-		position: absolute;
-		z-index: 1;
-		top: 55px;
-		left: 50%;
-		width: 12em;
-		margin-left: -15em;
-		height: 100px;
-	}
-	
-		#logo span
-		{
-			display: block;
-			width: 100%;
-			height: 100%;
-			line-height: 4em;
-			background: rgba(255,255,255,0.15);
-			border: none;
-			border-top: 0;
-			border-radius: 0 0 0.35em 0.35em;
-			color: #52575c;
-			display: inline-block;
-			font-weight: 600;
-			letter-spacing: 3px;
-			text-align: center;
-			text-transform: uppercase;
-		}
-
-        #logo2
-        {
-                position: absolute;
-                z-index: 1;
-                top: 2em;
-                left: 50%;
-                width: 300px;
-                margin-left: 0em;
-                height: 110px;
-        }
-                #logo2 a
-                {
-                        display: block;
-                        border-bottom: none;
-                        width: 100%;
-                        height: 100%;
-                }
-
 	/*#nav
 	{
 		text-align: center;
