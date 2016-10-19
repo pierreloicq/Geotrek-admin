@@ -1,24 +1,24 @@
 **Geotrek**, *paths* management for *National Parks* and *Tourism organizations*.
 
-.. image:: http://geotrek.fr/images/logo-128.png
+.. image:: http://geotrek.fr/assets/img/logo.svg
 
 :master: |master-status| |master-coverage|
 :develop: |develop-status|
 
 .. |master-status| image::
-    https://api.travis-ci.org/makinacorpus/Geotrek.png?branch=master
+    https://api.travis-ci.org/GeotrekCE/Geotrek-admin.png?branch=master
     :alt: Build Status
-    :target: https://travis-ci.org/makinacorpus/Geotrek
+    :target: https://travis-ci.org/GeotrekCE/Geotrek-admin
 
 .. |master-coverage| image::
-    https://coveralls.io/repos/makinacorpus/Geotrek/badge.png?branch=master
+    https://coveralls.io/repos/GeotrekCE/Geotrek-admin/badge.png?branch=master
     :alt: Coverage
-    :target: https://coveralls.io/r/makinacorpus/Geotrek
+    :target: https://coveralls.io/r/GeotrekCE/Geotrek-admin
 
 .. |develop-status| image::
-    https://api.travis-ci.org/makinacorpus/Geotrek.png?branch=develop
+    https://api.travis-ci.org/GeotrekCE/Geotrek.png?branch=develop
     :alt: Build Status
-    :target: https://travis-ci.org/makinacorpus/Geotrek
+    :target: https://travis-ci.org/GeotrekCE/Geotrek-admin
 
 
 In brief
@@ -58,15 +58,15 @@ License
 
 ----------
 
-.. image:: http://geotrek.fr/images/parc_ecrins_big.png
+.. image:: http://geotrek.fr/assets/img/parc_ecrins.png
     :target: http://www.ecrins-parcnational.fr
 
 
-.. image:: http://geotrek.fr/images/parc_mercantour_big.png
+.. image:: http://geotrek.fr/assets/img/parc_mercantour.png
     :target: http://www.mercantour.eu
 
 
-.. image:: http://geotrek.fr/images/alpi_maritime_big.png
+.. image:: http://geotrek.fr/assets/img/alpi_maritime.png
     :target: http://www.parcoalpimarittime.it
 
 
