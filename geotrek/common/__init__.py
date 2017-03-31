@@ -10,7 +10,7 @@ from django.db import connection
 from django.db.models.signals import pre_migrate, post_migrate
 from django.core.exceptions import ImproperlyConfigured
 
-from geotrek.common.utils.postgresql import load_sql_files, move_models_to_schemas
+from geotrek.common.utils.postgresql import load_sql_files
 
 
 """
@@ -21,7 +21,6 @@ from geotrek.common.utils.postgresql import load_sql_files, move_models_to_schem
 
 def run_initial_sql_post_migrate(sender, **kwargs):
     load_sql_files(sender.label)
-    move_models_to_schemas(sender.label)
 
 
 def check_srid_has_meter_unit(sender, **kwargs):
