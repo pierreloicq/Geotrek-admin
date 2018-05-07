@@ -1,36 +1,13 @@
-dist: trusty
-language: python
-python: "2.7"
-
-cache:
-  - apt
-  - pip
-
-addons:
-  apt:
-    packages:
-    - libgdal-dev
+sudo: required
 
 services:
-  - postgresql
+  - docker
 
 env:
   - DJANGO_SETTINGS_MODULE=geotrek.settings.tests
 
 install:
-  - pip install --global-option=build_ext --global-option="-I/usr/include/gdal/" gdal==1.10.0
-  - pip install -e . flake8 coverage
-  - psql -c "create user geotrek superuser password 'geotrek'" -U postgres
-  - psql -c "create database geotrekdb owner geotrek" -U postgres
-  - ./manage.py collectstatic --noinput
+  - docker-compose build
 
 script:
-  - flake8 geotrek
-  - find geotrek/*/migrations/*.py | xargs grep -l srid | xargs grep -L SRID
-  - coverage run manage.py test geotrek
-
-after_success:
-  # Report coverage results to coveralls.io
-  - ./bin/coverage report -m
-  - pip install coveralls
-  - coveralls
+  - docker-compose run env/bin/python manage.py test geotrek
