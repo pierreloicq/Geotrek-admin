@@ -10,7 +10,7 @@ from .authent import StructureViewSet  # noqa
 if 'geotrek.core' in settings.INSTALLED_APPS:
     from .core import PathViewSet  # noqa
 if 'geotrek.trekking' in settings.INSTALLED_APPS:
-    from .trekking import TrekViewSet, TourViewSet, POIViewSet  # noqa
+    from .trekking import MobileTrekViewSet, mobile_filters_view, TrekViewSet, TourViewSet, POIViewSet  # noqa
 if 'geotrek.sensitivity' in settings.INSTALLED_APPS:
     from .sensitivity import SensitiveAreaViewSet  # noqa
     from .sensitivity import SportPracticeViewSet  # noqa

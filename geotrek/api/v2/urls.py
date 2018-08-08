@@ -7,11 +7,13 @@ from rest_framework import routers
 from geotrek.api.v2 import views as api_views
 
 router = routers.DefaultRouter()
+mobile_router = routers.DefaultRouter()
 router.register(r'structure', api_views.StructureViewSet, base_name='structure')
 if 'geotrek.core' in settings.INSTALLED_APPS:
     router.register(r'path', api_views.PathViewSet, base_name='path')
 if 'geotrek.trekking' in settings.INSTALLED_APPS:
     router.register(r'trek', api_views.TrekViewSet, base_name='trek')
+    mobile_router.register(r'trek', api_views.MobileTrekViewSet, base_name='mobile_trek')
     router.register(r'poi', api_views.POIViewSet, base_name='poi')
 if 'geotrek.tourism' in settings.INSTALLED_APPS:
     router.register(r'tour', api_views.TourViewSet, base_name='tour')
@@ -21,5 +23,7 @@ if 'geotrek.sensitivity' in settings.INSTALLED_APPS:
 
 urlpatterns = [
     url(r'^$', api_views.SwaggerSchemaView.as_view(), name="schema"),
-    url(r'^', include(router.urls))
+    url(r'^mobile/filters/$', api_views.mobile_filters_view),
+    url(r'^mobile/', include(mobile_router.urls)),
+    url(r'^', include(router.urls)),
 ]

@@ -9,6 +9,8 @@ from rest_framework import serializers
 from rest_framework.relations import HyperlinkedIdentityField
 from rest_framework_gis import serializers as geo_serializers
 
+from django.contrib.gis.geos import Point
+
 from geotrek.api.v2.functions import Transform, Length, Length3D
 from geotrek.api.v2.utils import get_translation_or_dict
 from geotrek.common import models as common_models
@@ -260,6 +262,36 @@ if 'geotrek.trekking' in settings.INSTALLED_APPS:
                 'external_id', 'published',
                 'geometry', 'update_datetime', 'create_datetime'
             )
+    class MobileTrekListSerializer(geo_serializers.GeoFeatureModelSerializer):
+        geometry = geo_serializers.GeometrySerializerMethodField(read_only=True)
+
+        class Meta:
+            model = trekking_models.Trek
+            geo_field = 'geometry'
+            fields = (
+                'id', 'name', 'departure', 'duration', 'difficulty', 'ascent', 'themes', 'practice', 'geometry',
+            )
+
+        def get_geometry(self, obj):
+            point = Point(obj.geom[0])
+            point.srid = obj.geom.srid
+            point.transform(settings.API_SRID)
+            return point
+
+    class MobileTrekDetailSerializer(geo_serializers.GeoFeatureModelSerializer):
+        geometry = geo_serializers.GeometrySerializerMethodField(read_only=True)
+
+        class Meta:
+            model = trekking_models.Trek
+            geo_field = 'geometry'
+            fields = (
+                'id', 'name', 'departure', 'duration', 'difficulty', 'ascent', 'themes', 'practice', 'geometry',
+            )
+
+        def get_geometry(self, obj):
+            obj.geom.transform(settings.API_SRID)
+            return obj.geom
+
 
     class TrekDetailSerializer(TrekListSerializer):
         pictures = AttachmentSerializer(many=True, )

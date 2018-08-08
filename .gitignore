@@ -1,6 +1,7 @@
 *.pyc
 *.tar.gz
 *.mo
+*.swp
 
 /var/
 /etc/

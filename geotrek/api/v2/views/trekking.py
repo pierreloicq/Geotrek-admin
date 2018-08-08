@@ -3,13 +3,27 @@ from __future__ import unicode_literals
 from django.conf import settings
 from django.db.models import F
 from django.db.models.aggregates import Count
-from rest_framework import response, decorators
+from django.http import JsonResponse
+from rest_framework import response, decorators, viewsets
+from rest_framework_extensions.mixins import DetailSerializerMixin
 
 from geotrek.api.v2 import serializers as api_serializers, \
     viewsets as api_viewsets
 from geotrek.api.v2.functions import Transform, Length, Length3D
 from geotrek.trekking import models as trekking_models
+from geotrek.common import models as common_models
 
+def mobile_filters_view(request):
+    practices = {practice.pk: practice.name for practice in trekking_models.Practice.objects.all()}
+    themes = {theme.pk: { 'label': theme.label, 'pictogram': theme.pictogram.url} for theme in common_models.Theme.objects.all()}
+    lengths = ((0, 5), (5, 10), (10, 20), (20, None))
+    
+    return JsonResponse({'practices': practices, 'themes': themes, 'lengths':lengths})
+
+class MobileTrekViewSet(DetailSerializerMixin, viewsets.ReadOnlyModelViewSet):
+    queryset = trekking_models.Trek.objects.filter(published=True, deleted=False)
+    serializer_class = api_serializers.MobileTrekListSerializer
+    serializer_detail_class = api_serializers.MobileTrekDetailSerializer
 
 class TrekViewSet(api_viewsets.GeotrekViewset):
     serializer_class = api_serializers.TrekListSerializer
