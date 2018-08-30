@@ -24,6 +24,8 @@ if 'geotrek.trekking' in settings.INSTALLED_APPS:
     from geotrek.trekking import models as trekking_models
 if 'geotrek.sensitivity' in settings.INSTALLED_APPS:
     from geotrek.sensitivity import models as sensitivity_models
+if 'geotrek.zoning' in settings.INSTALLED_APPS:
+    from geotrek.zoning import models as zoning_models
 
 
 class Base3DSerializer(object):
@@ -262,14 +264,58 @@ if 'geotrek.trekking' in settings.INSTALLED_APPS:
                 'external_id', 'published',
                 'geometry', 'update_datetime', 'create_datetime'
             )
+
+    class MobileCitySerializer(serializers.ModelSerializer):
+
+        class Meta:
+            model = zoning_models.City
+            fields = (
+                'name',
+            )
+
+
+    class MobileDistrictSerializer(serializers.ModelSerializer):
+
+        class Meta:
+            model = zoning_models.District
+            fields = (
+                'name',
+            )
+
+
+    class MobileDifficultySerializer(serializers.ModelSerializer):
+        label = serializers.SerializerMethodField(read_only=True)
+
+        def get_label(self, obj):
+            return get_translation_or_dict('difficulty', self, obj)
+
+        class Meta:
+            model = trekking_models.DifficultyLevel
+            fields = ('id', 'label')
+
+    class MobileTrekThemeSerializer(serializers.ModelSerializer):
+        label = serializers.SerializerMethodField(read_only=True)
+
+        def get_label(self, obj):
+            return get_translation_or_dict('label', self, obj)
+
+        class Meta:
+            model = trekking_models.Theme
+            fields = ('id', 'label')
+
+
     class MobileTrekListSerializer(geo_serializers.GeoFeatureModelSerializer):
+        cities = MobileCitySerializer(read_only=True, many=True)
+        districts = MobileDistrictSerializer(read_only=True, many=True)
         geometry = geo_serializers.GeometrySerializerMethodField(read_only=True)
+        pictures = serializers.ReadOnlyField(source='serializable_pictures')
+        difficulty = MobileDifficultySerializer(read_only=True)
 
         class Meta:
             model = trekking_models.Trek
             geo_field = 'geometry'
             fields = (
-                'id', 'name', 'departure', 'duration', 'difficulty', 'ascent', 'themes', 'practice', 'geometry',
+                'id', 'geometry', 'ascent', 'cities', 'departure', 'districts', 'duration', 'difficulty', 'length', 'name', 'pictures', 'practice', 'themes',
             )
 
         def get_geometry(self, obj):
@@ -278,20 +324,45 @@ if 'geotrek.trekking' in settings.INSTALLED_APPS:
             point.transform(settings.API_SRID)
             return point
 
-    class MobileTrekDetailSerializer(geo_serializers.GeoFeatureModelSerializer):
+    class MobilePoiSerializer(geo_serializers.GeoFeatureModelSerializer):
         geometry = geo_serializers.GeometrySerializerMethodField(read_only=True)
+        pictures = serializers.ReadOnlyField(source='serializable_pictures')
 
         class Meta:
-            model = trekking_models.Trek
+            model = trekking_models.POI
             geo_field = 'geometry'
             fields = (
-                'id', 'name', 'departure', 'duration', 'difficulty', 'ascent', 'themes', 'practice', 'geometry',
+                'id', 'geometry', 'description', 'name', 'pictures', 'type',
             )
 
         def get_geometry(self, obj):
             obj.geom.transform(settings.API_SRID)
             return obj.geom
 
+    class MobileTrekDetailSerializer(geo_serializers.GeoFeatureModelSerializer):
+        cities = MobileCitySerializer(read_only=True, many=True)
+        districts = MobileDistrictSerializer(read_only=True, many=True)
+        geometry = geo_serializers.GeometrySerializerMethodField(read_only=True)
+        pictures = serializers.ReadOnlyField(source='serializable_pictures')
+        pois = MobilePoiSerializer(read_only=True, source='published_pois', many=True)
+        themes = MobileTrekThemeSerializer(many=True, read_only=True)
+        difficulty = MobileDifficultySerializer(read_only=True)
+
+        class Meta:
+            model = trekking_models.Trek
+            geo_field = 'geometry'
+            fields = (
+                    'id', 'geometry', 'access', 'accessibilities', 'advice', 'advised_parking', 'ambiance',
+                    'arrival', 'ascent', 'children', 'cities', 'departure', 'description', 'description_teaser',
+                    'difficulty', 'disabled_infrastructure', 'districts', 'duration', 'duration_pretty',
+                    'information_desks', 'is_park_centered', 'length', 'max_elevation', 'min_elevation',
+                    'name', 'networks', 'parents', 'parking_location', 'pictures', 'practice',
+                    'public_transport', 'pois', 'route', 'themes',
+            )
+
+        def get_geometry(self, obj):
+            obj.geom.transform(settings.API_SRID)
+            return obj.geom
 
     class TrekDetailSerializer(TrekListSerializer):
         pictures = AttachmentSerializer(many=True, )

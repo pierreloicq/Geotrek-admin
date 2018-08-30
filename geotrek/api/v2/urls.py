@@ -23,6 +23,8 @@ if 'geotrek.sensitivity' in settings.INSTALLED_APPS:
 
 urlpatterns = [
     url(r'^$', api_views.SwaggerSchemaView.as_view(), name="schema"),
+    url(r'^mobile/practices/$', api_views.mobile_practices_view),
+    url(r'^mobile/poi_types/$', api_views.mobile_poi_types_view),
     url(r'^mobile/filters/$', api_views.mobile_filters_view),
     url(r'^mobile/', include(mobile_router.urls)),
     url(r'^', include(router.urls)),

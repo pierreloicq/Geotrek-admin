@@ -4,7 +4,7 @@ from django.conf import settings
 from django.db.models import F
 from django.db.models.aggregates import Count
 from django.http import JsonResponse
-from rest_framework import response, decorators, viewsets
+from rest_framework import response, decorators, viewsets, permissions
 from rest_framework_extensions.mixins import DetailSerializerMixin
 
 from geotrek.api.v2 import serializers as api_serializers, \
@@ -15,15 +15,29 @@ from geotrek.common import models as common_models
 
 def mobile_filters_view(request):
     practices = {practice.pk: practice.name for practice in trekking_models.Practice.objects.all()}
+    difficulties = {difficulty.pk: {'name': difficulty.difficulty, 'pictogram': difficulty.pictogram.url} for difficulty in trekking_models.DifficultyLevel.objects.all()}
+    durations = ((0, 0.5), (0.5, 1), (1, None))
+    elevations = ((0, 300), (300, 600), (600, 1000), (1000, None))
+    lengths = ((0, 10), (10, 20), (20, 30), (30, None))
     themes = {theme.pk: { 'label': theme.label, 'pictogram': theme.pictogram.url} for theme in common_models.Theme.objects.all()}
-    lengths = ((0, 5), (5, 10), (10, 20), (20, None))
     
-    return JsonResponse({'practices': practices, 'themes': themes, 'lengths':lengths})
+    return JsonResponse({'practices': practices, 'difficulties': difficulties, 'durations': durations, 'elevations': elevations, 'lengths': lengths, 'themes': themes, 'lengths':lengths})
+
+def mobile_poi_types_view(request):
+    types = {type.pk: {'pictogram': type.pictogram.url} for type in trekking_models.POIType.objects.all()}
+
+    return JsonResponse({'types': types})
+
+def mobile_practices_view(request):
+    practices = {practice.pk: { 'name': practice.name, 'pictogram': practice.pictogram.url} for practice in trekking_models.Practice.objects.all()}
+
+    return JsonResponse({'practices': practices})
 
 class MobileTrekViewSet(DetailSerializerMixin, viewsets.ReadOnlyModelViewSet):
     queryset = trekking_models.Trek.objects.filter(published=True, deleted=False)
     serializer_class = api_serializers.MobileTrekListSerializer
     serializer_detail_class = api_serializers.MobileTrekDetailSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly ]
 
 class TrekViewSet(api_viewsets.GeotrekViewset):
     serializer_class = api_serializers.TrekListSerializer
