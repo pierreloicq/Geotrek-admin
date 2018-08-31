@@ -347,12 +347,13 @@ if 'geotrek.trekking' in settings.INSTALLED_APPS:
         pois = MobilePoiSerializer(read_only=True, source='published_pois', many=True)
         themes = MobileTrekThemeSerializer(many=True, read_only=True)
         difficulty = MobileDifficultySerializer(read_only=True)
+        altimetry = serializers.ReadOnlyField(source="get_elevation_chart_url_png")
 
         class Meta:
             model = trekking_models.Trek
             geo_field = 'geometry'
             fields = (
-                    'id', 'geometry', 'access', 'accessibilities', 'advice', 'advised_parking', 'ambiance',
+                    'id', 'geometry', 'access', 'accessibilities', 'advice', 'advised_parking', 'altimetry', 'ambiance',
                     'arrival', 'ascent', 'children', 'cities', 'departure', 'description', 'description_teaser',
                     'difficulty', 'disabled_infrastructure', 'districts', 'duration', 'duration_pretty',
                     'information_desks', 'is_park_centered', 'length', 'max_elevation', 'min_elevation',

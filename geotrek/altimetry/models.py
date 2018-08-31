@@ -61,6 +61,13 @@ class AltimetryMixin(models.Model):
     def get_elevation_profile_svg(self):
         return AltimetryHelper.profile_svg(self.get_elevation_profile())
 
+    def get_elevation_chart_url_png(self):
+        """Generic url. Will fail if there is no such url defined
+        for the required model (see core.Path and trekking.Trek)
+        """
+        model_name = self._meta.model_name
+        return reverse('altimetry:profile_png', kwargs={'pk': self.pk, 'model_name': model_name})
+
     def get_elevation_chart_url(self):
         """Generic url. Will fail if there is no such url defined
         for the required model (see core.Path and trekking.Trek)

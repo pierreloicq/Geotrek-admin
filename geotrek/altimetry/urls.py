@@ -7,7 +7,8 @@ from geotrek.altimetry.views import (ElevationProfile, ElevationChart,
 
 
 urlpatterns = [
-    url(r'^%s/profiles/(?P<model_name>.+)-(?P<pk>\d+).png$' % settings.MEDIA_URL.strip('/'), serve_elevation_chart),
+    url(r'^%s/profiles/(?P<model_name>.+)-(?P<pk>\d+).png$' % settings.MEDIA_URL.strip('/'),
+        serve_elevation_chart, name='profile_png'),
 ]
 
 
