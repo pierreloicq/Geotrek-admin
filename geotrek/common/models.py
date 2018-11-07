@@ -3,6 +3,7 @@ from PIL import Image
 
 from django.conf import settings
 from django.db import models
+from django.utils.text import slugify
 from django.utils.translation import ugettext_lazy as _
 
 from paperclip.models import FileType as BaseFileType, Attachment as BaseAttachment
@@ -46,7 +47,36 @@ class FileType(StructureOrNoneRelated, BaseFileType):
         return self.type
 
 
+def attachment_upload(instance, filename):
+    """
+    TODO: delete this function and attachment_file override, when baseinfrastructure models will be splitted
+    """
+    name, ext = os.path.splitext(filename)
+    renamed = slugify(instance.title or name) + ext
+
+    # case proxy model
+    app_label = instance.content_object._meta.app_label
+    model_name = instance.content_object._meta.model_name
+
+    if app_label == 'infrastructure' and model_name == 'baseinfrastructure':
+        # this case is a base proxy model, we must find final proxy class
+        if instance.content_object.type.type == 'S':
+            model_name = 'signage'
+        else:
+            model_name = 'infrastructure'
+
+    return 'paperclip/%s/%s/%s' % (
+        '%s_%s' % (app_label,
+                   model_name),
+        instance.content_object.pk,
+        renamed)
+
+
 class Attachment(BaseAttachment):
+    attachment_file = models.FileField(_('File'), blank=True,
+                                       upload_to=attachment_upload,
+                                       max_length=512)
+
     class Meta(BaseAttachment.Meta):
         db_table = 'fl_t_fichier'
 
