@@ -67,7 +67,7 @@ You can filter treks, touristic contents, touristic events and static pages by s
 Multiple sources are separated with comas (without space before or after coma). Do not forget to add double quotes after and before the parameter if there are spaces in source names.
 You can run several commands to export several sources combinations into several directories and use them to publish several distinct web portals.
 
-You can do exactly the same with Target_Portal filed value. 
+You can do exactly the same with Target_Portal filed value.
 
 
 ::
@@ -78,7 +78,7 @@ You can do exactly the same with Target_Portal filed value.
 Synchronization filtered by touristic content categories
 --------------------------------------------------------
 
-In Geotrek-mobile, you can choose to also include touristic content per trek. You must specify ID categories :
+If you use Geotrek-mobile, you have to include also touristic content per trek. You must specify ID categories :
 
 ::
 
@@ -86,6 +86,7 @@ In Geotrek-mobile, you can choose to also include touristic content per trek. Yo
 
 Multiple categories are separated with comas (without space before or after coma).
 
+.. note:: You will need to specify this option to make your mobile application work properly.
 
 Synchronization with a distant Geotrek-Rando serveur
 ----------------------------------------------------
