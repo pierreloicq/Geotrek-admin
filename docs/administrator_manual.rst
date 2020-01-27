@@ -15,120 +15,124 @@ Common settings
 ================
 
 Theme
+--------------------------
 
-- Required
-- Can be a sprite or an squared picto
-- PNG, 64×64px
+- Picto required
+    - Can be a sprite or an squared picto
+    - PNG, 64×64px
 
-RecordSource
+Record source
+--------------------------
 
-- Optional
-- format and dimension ?
+- Picto optional
+    - format and dimension ?
 
 Infrastructure settings
 ========================
 
-InfrastructureType
+Infrastructure Type
+--------------------------
 
-- Optional
-- Default: `<static>/infrastructure/picto-infrastructure.png`
-- format and dimension ?
+- Picto optional
+    - Default: `<static>/infrastructure/picto-infrastructure.png`
+    - format and dimension ?
 
 Signage settings
 ========================
 
-SignageType
+Signage Type
+--------------------------
 
-- Optional
-- Default: `<static>/signage/picto-signage.png`
-- format and dimension ?
+- Picto optional
+    - Default: `<static>/signage/picto-signage.png`
+    - format and dimension ?
 
 Trekking settings
 ================
 
-TrekNetwork
+Trek Network
+--------------------------
 
-- Required
-- SVG, 36×36px (at least squared and viewbox dimension setted)
+- Picto required: SVG, 36×36px (at least squared and viewbox dimension setted)
 
 Practice
+--------------------------
 
-- Required
-- SVG, 36×36px (at least squared and viewbox dimension setted)
+- Picto required: SVG, 36×36px (at least squared and viewbox dimension setted)
 
 Accessibility
+--------------------------
 
-- Optional
-- PNG, 64×64px
+- Picto optional: PNG, 64×64px
 
 Route
+--------------------------
 
-- Optional
-- SVG, 36×36px (at least squared and viewbox dimension setted)
+- Picto optional: SVG, 36×36px (at least squared and viewbox dimension setted)
 
-DifficultyLevel
+Difficulty Level
+--------------------------
 
-- Optional
-- SVG, 36×36px (at least squared and viewbox dimension setted)
+- Picto optional: SVG, 36×36px (at least squared and viewbox dimension setted)
 
-WebLinkCategory
+WebLink Category
+--------------------------
 
-- Required
-- PNG, 32×32px
+- Picto required: PNG, 32×32px
 
-POIType
+POI Type
+--------------------------
 
-- Required
-- format and dimension ?
+- Picto required: format and dimension ?
 
-ServiceType
-
+Service Type
+--------------------------
 
 Diving settings
 ================
 
 Practice
+--------------------------
 
-- Required
-- SVG, 36×36px (at least squared and viewbox dimension setted)
+- Picto required: SVG, 36×36px (at least squared and viewbox dimension setted)
 
 Difficulty
+--------------------------
 
-- Optional
-- format and dimension ?
+- Picto optional: format and dimension ?
 
 Level
+--------------------------
 
-- Optional
-- format and dimension ?
+- Picto optional: format and dimension ?
 
 Tourism settings
 ================
 
-InformationDeskType
+Information Desk Type
+--------------------------
 
-- Required
-- format and dimension ?
+- Picto required: format and dimension ?
 
-TouristicContentCategory
+Touristic Content Category
+--------------------------
 
-- Required
-- SVG, 36×36px (at least squared and viewbox dimension setted)
+- Picto required: SVG, 36×36px (at least squared and viewbox dimension setted)
 
-TouristicContentType
+Touristic Content Type
+--------------------------
 
-- Optional
-- format and dimension ?
+- Picto optional: format and dimension ?
 
-TouristicEventType
+Touristic Event Type
+--------------------------
 
-- Optional
-- format and dimension ?
+- Picto optional: format and dimension ?
 
 Sensitivity settings
 =====================
 
 Species
+--------------------------
 
-- Optional
-- format and dimension ?
+- Picto optional: format and dimension ?
