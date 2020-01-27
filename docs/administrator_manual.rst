@@ -2,13 +2,17 @@
 ADMINISTRATOR MANUAL
 ======================
 
-Pictograms
-============
+Geotrek allows you to define some categories and settings for each module. They are available in Django Admin interface, only for superuser or staff members.
 
-All these models allow to add pictograms. Recommended dimensions are the default pictograms dimensions.
+.. figure:: ./images/capture-admin.png
+   :alt: Link to Admin
 
-Common
-------
+   Link to Admin
+
+Some settings allows to add pictograms : recommended dimensions are the default pictograms dimensions.
+
+Common settings
+================
 
 Theme
 
@@ -21,8 +25,26 @@ RecordSource
 - Optional
 - format and dimension ?
 
-Trekking
---------
+Infrastructure settings
+========================
+
+InfrastructureType
+
+- Optional
+- Default: `<static>/infrastructure/picto-infrastructure.png`
+- format and dimension ?
+
+Signage settings
+========================
+
+SignageType
+
+- Optional
+- Default: `<static>/signage/picto-signage.png`
+- format and dimension ?
+
+Trekking settings
+================
 
 TrekNetwork
 
@@ -62,8 +84,8 @@ POIType
 ServiceType
 
 
-Diving
-------
+Diving settings
+================
 
 Practice
 
@@ -80,9 +102,8 @@ Level
 - Optional
 - format and dimension ?
 
-
-Tourism
--------
+Tourism settings
+================
 
 InformationDeskType
 
@@ -104,31 +125,10 @@ TouristicEventType
 - Optional
 - format and dimension ?
 
-
-infrastructure
---------------
-
-InfrastructureType
-
-- Optional
-- Default: `<static>/infrastructure/picto-infrastructure.png`
-- format and dimension ?
-
-
-sensitivity
---------------
+Sensitivity settings
+=====================
 
 Species
 
 - Optional
-- format and dimension ?
-
-
-signage
--------
-
-SignageType
-
-- Optional
-- Default: `<static>/signage/picto-signage.png`
 - format and dimension ?
