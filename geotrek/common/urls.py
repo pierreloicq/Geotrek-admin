@@ -2,7 +2,7 @@ from django.urls import path, converters, register_converter
 from mapentity.registry import MapEntityOptions
 
 from .views import (JSSettings, admin_check_extents, DocumentPublic, import_view, import_update_json,
-                    ThemeViewSet, MarkupPublic)
+                    ThemeViewSet, MarkupPublic, LeafletTestView)
 
 
 class LangConverter(converters.StringConverter):
@@ -18,6 +18,7 @@ urlpatterns = [
     path('commands/import-update.json', import_update_json, name='import_update_json'),
     path('commands/import', import_view, name='import_dataset'),
     path('api/<lang:lang>/themes.json', ThemeViewSet.as_view({'get': 'list'}), name="themes_json"),
+    path('leaflet-tiles/', LeafletTestView.as_view(), name="leaflet-tiles"),
 ]
 
 

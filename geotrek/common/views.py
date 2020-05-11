@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db.utils import DatabaseError
 from django.http import HttpResponse, HttpResponseNotFound
 from django.utils.translation import ugettext as _
+from django.views.generic import TemplateView
 from django_celery_results.models import TaskResult
 from django.shortcuts import get_object_or_404
 from django.utils import timezone
@@ -338,3 +339,8 @@ def last_list(request):
 
 
 home = last_list
+
+
+class LeafletTestView(TemplateView):
+    template_name = "common/leaflet_test.html"
+
