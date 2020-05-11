@@ -343,4 +343,3 @@ home = last_list
 
 class LeafletTestView(TemplateView):
     template_name = "common/leaflet_test.html"
-
