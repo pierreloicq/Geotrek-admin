@@ -89,6 +89,10 @@ class ApidaeParser(AttachmentParserMixin, Parser):
         'illustrations'
     ]
 
+    def __init__(self, *args, **kwargs):
+        super(ApidaeParser, self).__init__(*args, **kwargs)
+        self.get_different_languages()
+
     @property
     def items(self):
         if self.nb == 0:
@@ -126,6 +130,26 @@ class ApidaeParser(AttachmentParserMixin, Parser):
         geom.transform(settings.SRID)
         return geom
 
+    def get_different_languages(self):
+        fields_model = [f.name for f in self.model._meta.get_fields()]
+        fields = self.fields.copy()
+        for key, value in fields.items():
+            if 'libelle' in value:
+                key_without_tra = key[:-3]
+                for lang in settings.MODELTRANSLATION_LANGUAGES:
+                    new_key = '%s_%s' % (key_without_tra, lang)
+                    if new_key in fields_model:
+                        self.fields[new_key] = value[:-2].replace('libelle', 'libelle%s' % lang.title())
+            if not isinstance(value, str):
+                key_without_tra = key[:-3]
+                for lang in settings.MODELTRANSLATION_LANGUAGES:
+                    new_key = '%s_%s' % (key_without_tra, lang)
+                    if new_key in fields_model:
+                        new_value = [value_list if 'libelle' not in value_list
+                                     else value_list[:-2].replace('libelle', 'libelle%s' % lang.title())
+                                     for value_list in value]
+                        self.fields[new_key] = new_value
+
 
 class TouristicEventApidaeParser(ApidaeParser):
     """Parser to import touristic events from APIDAE"""
@@ -135,8 +159,8 @@ class TouristicEventApidaeParser(ApidaeParser):
     portal = None
     model = TouristicEvent
     fields = {
-        'description_teaser': 'presentation.descriptifCourt.libelleFr',
-        'description': 'presentation.descriptifDetaille.libelleFr',
+        'description_teaser_fr': 'presentation.descriptifCourt.libelleFr',
+        'description_fr': 'presentation.descriptifDetaille.libelleFr',
         'geom': 'localisation.geolocalisation.geoJson.coordinates',
         'begin_date': 'ouverture.periodesOuvertures.0.dateDebut',
         'end_date': 'ouverture.periodesOuvertures.0.dateFin',
@@ -156,7 +180,7 @@ class TouristicEventApidaeParser(ApidaeParser):
         'organizer': 'informations.structureGestion.nom.libelleFr',
         'type': 'informationsFeteEtManifestation.typesManifestation.0.libelleFr',
         'participant_number': 'informationsFeteEtManifestation.nbParticipantsAttendu',
-        'practical_info': (
+        'practical_info_fr': (
             'ouverture.periodeEnClair.libelleFr',
             'informationsFeteEtManifestation.nbParticipantsAttendu',
             'descriptionTarif.tarifsEnClair.libelleFr',
@@ -168,7 +192,7 @@ class TouristicEventApidaeParser(ApidaeParser):
             'gestion.membreProprietaire.nom',
         ),
         'eid': 'id',
-        'name': 'nom.libelleFr',
+        'name_fr': 'nom.libelleFr',
     }
     responseFields = [
         'id',
@@ -251,7 +275,7 @@ class TouristicEventApidaeParser(ApidaeParser):
     def filter_website(self, src, val):
         return self.filter_comm(val, 205, multiple=False)
 
-    def filter_practical_info(self, src, val):
+    def filter_practical_info_fr(self, src, val):
         (ouverture, capacite, tarifs, paiement, services, langues, localisation, datemodif, proprio) = val
         if ouverture:
             ouverture = "<b>Ouverture:</b><br>" + "<br>".join(ouverture.splitlines()) + "<br>"
@@ -259,16 +283,46 @@ class TouristicEventApidaeParser(ApidaeParser):
             capacite = "<b>Capacité totale:</b><br>" + str(capacite) + "<br>"
         if tarifs:
             tarifs = "<b>Tarifs:</b><br>" + "<br>".join(tarifs.splitlines()) + "<br>"
-        if paiement:
+        if paiement and any(values.get('libelleFr') for values in paiement):
             paiement = "<b>Modes de paiement:</b><br>" + ", ".join([i['libelleFr'] for i in paiement]) + "<br>"
-        if services:
+        if services and any(values.get('libelleFr') for values in services):
             services = "<b>Services:</b><br>" + ", ".join([i['libelleFr'] for i in services]) + "<br>"
-        if langues:
+        if langues and any(values.get('libelleFr') for values in langues):
             langues = "<b>Langues Parlées:</b><br>" + ", ".join([i['libelleFr'] for i in langues]) + "<br>"
         if localisation:
             localisation = "<b>Accès:</b><br>" + "<br>".join(localisation.splitlines()) + "<br>"
         datemodif = datetime.datetime.strptime(datemodif[:10], "%Y-%m-%d").strftime("%d/%m/%Y")
         modif = "<i>Fiche mise à jour par " + proprio + " le " + datemodif + "</i>"
+        lines = [line for line in [
+            ouverture,
+            capacite,
+            tarifs,
+            paiement,
+            services,
+            langues,
+            localisation,
+            modif,
+        ] if line]
+        return '<br>'.join(lines)
+
+    def filter_practical_info_en(self, src, val):
+        (ouverture, capacite, tarifs, paiement, services, langues, localisation, datemodif, proprio) = val
+        if ouverture:
+            ouverture = "<b>Openning:</b><br>" + "<br>".join(ouverture.splitlines()) + "<br>"
+        if capacite:
+            capacite = "<b>Total Capacity:</b><br>" + str(capacite) + "<br>"
+        if tarifs:
+            tarifs = "<b>Prices:</b><br>" + "<br>".join(tarifs.splitlines()) + "<br>"
+        if paiement and any(values.get('libelleEn') for values in paiement):
+            paiement = "<b>Payment method:</b><br>" + ", ".join([i['libelleEn'] for i in paiement]) + "<br>"
+        if services and any(values.get('libelleEn') for values in services):
+            services = "<b>Services:</b><br>" + ", ".join([i['libelleEn'] for i in services]) + "<br>"
+        if langues and any(values.get('libelleEn') for values in langues):
+            langues = "<b>Spoken languages:</b><br>" + ", ".join([i['libelleEn'] for i in langues]) + "<br>"
+        if localisation:
+            localisation = "<b>Access:</b><br>" + "<br>".join(localisation.splitlines()) + "<br>"
+        datemodif = datetime.datetime.strptime(datemodif[:10], "%Y-%m-%d").strftime("%d/%m/%Y")
+        modif = "<i>Update sheet by " + proprio + " the " + datemodif + "</i>"
         lines = [line for line in [
             ouverture,
             capacite,
@@ -319,9 +373,9 @@ class TouristicContentApidaeParser(TouristicContentMixin, ApidaeParser):
     eid = 'eid'
     fields = {
         'eid': 'id',
-        'name': 'nom.libelleFr',
-        'description': 'presentation.descriptifDetaille.libelleFr',
-        'description_teaser': 'presentation.descriptifCourt.libelleFr',
+        'name_fr': 'nom.libelleFr',
+        'description_fr': 'presentation.descriptifDetaille.libelleFr',
+        'description_teaser_fr': 'presentation.descriptifCourt.libelleFr',
         'contact': (
             'localisation.adresse.adresse1',
             'localisation.adresse.adresse2',
@@ -333,7 +387,7 @@ class TouristicContentApidaeParser(TouristicContentMixin, ApidaeParser):
         'email': 'informations.moyensCommunication',
         'website': 'informations.moyensCommunication',
         'geom': 'localisation.geolocalisation.geoJson.coordinates',
-        'practical_info': (
+        'practical_info_fr': (
             'ouverture.periodeEnClair.libelleFr',
             'informationsHebergementCollectif.capacite.capaciteTotale',
             'descriptionTarif.tarifsEnClair.libelleFr',
@@ -410,7 +464,7 @@ class TouristicContentApidaeParser(TouristicContentMixin, ApidaeParser):
         ] if line]
         return '<br>'.join(lines)
 
-    def filter_practical_info(self, src, val):
+    def filter_practical_info_fr(self, src, val):
         (ouverture, capacite, tarifs, paiement, services, localisation, datemodif, proprio) = val
         if ouverture:
             ouverture = "<b>Ouverture:</b><br>" + "<br>".join(ouverture.splitlines()) + "<br>"
@@ -418,10 +472,14 @@ class TouristicContentApidaeParser(TouristicContentMixin, ApidaeParser):
             capacite = "<b>Capacité totale:</b><br>" + str(capacite) + "<br>"
         if tarifs:
             tarifs = "<b>Tarifs:</b><br>" + "<br>".join(tarifs.splitlines()) + "<br>"
-        if paiement:
-            paiement = "<b>Modes de paiement:</b><br>" + ", ".join([i['libelleFr'] for i in paiement]) + "<br>"
-        if services:
-            services = "<b>Services:</b><br>" + ", ".join([i['libelleFr'] for i in services]) + "<br>"
+        if paiement and any(values.get('libelleFr') for values in paiement):
+            paiement = "<b>Modes de paiement:</b><br>" + ", ".join(i.get('libelleFr') for i in paiement) + "<br>"
+        else:
+            paiement = ""
+        if services and any(values.get('libelleFr') for values in services):
+            services = "<b>Services:</b><br>" + ", ".join(i.get('libelleFr') for i in services) + "<br>"
+        else:
+            services = ""
         if localisation:
             localisation = "<b>Accès:</b><br>" + "<br>".join(localisation.splitlines()) + "<br>"
         datemodif = datetime.datetime.strptime(datemodif[:10], "%Y-%m-%d").strftime("%d/%m/%Y")
@@ -437,10 +495,48 @@ class TouristicContentApidaeParser(TouristicContentMixin, ApidaeParser):
         ] if line]
         return '<br>'.join(lines)
 
-    def filter_description(self, src, val):
+    def filter_practical_info_en(self, src, val):
+        (ouverture, capacite, tarifs, paiement, services, localisation, datemodif, proprio) = val
+        if ouverture:
+            ouverture = "<b>Openning:</b><br>" + "<br>".join(ouverture.splitlines()) + "<br>"
+        if capacite:
+            capacite = "<b>Total Capacity:</b><br>" + str(capacite) + "<br>"
+        if tarifs:
+            tarifs = "<b>Prices:</b><br>" + "<br>".join(tarifs.splitlines()) + "<br>"
+
+        if paiement and any(values.get('libelleEn') for values in paiement):
+            paiement = "<b>Payment method:</b><br>" + ", ".join([i.get('libelleEn') for i in paiement]) + "<br>"
+        else:
+            paiement = ""
+        if services and any(values.get('libelleEn') for values in services):
+            services = "<b>Services:</b><br>" + ", ".join([i.get('libelleEn') for i in services]) + "<br>"
+        else:
+            services = ""
+        if localisation:
+            localisation = "<b>Access:</b><br>" + "<br>".join(localisation.splitlines()) + "<br>"
+        datemodif = datetime.datetime.strptime(datemodif[:10], "%Y-%m-%d").strftime("%d/%m/%Y")
+        modif = "<i>Update sheet by " + proprio + " the " + datemodif + "</i>"
+        lines = [line for line in [
+            ouverture,
+            capacite,
+            tarifs,
+            paiement,
+            services,
+            localisation,
+            modif,
+        ] if line]
+        return '<br>'.join(lines)
+
+    def filter_description_fr(self, src, val):
         return '<br>'.join(val.splitlines())
 
-    def filter_description_teaser(self, src, val):
+    def filter_description_teaser_fr(self, src, val):
+        return '<br>'.join(val.splitlines())
+
+    def filter_description_en(self, src, val):
+        return '<br>'.join(val.splitlines())
+
+    def filter_description_teaser_en(self, src, val):
         return '<br>'.join(val.splitlines())
 
 
