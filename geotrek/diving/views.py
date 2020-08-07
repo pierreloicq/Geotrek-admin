@@ -36,9 +36,8 @@ class DiveList(FlattenPicturesMixin, MapEntityList):
     model = Dive
     filterform = DiveFilterSet
     columns = ['id', 'name', 'levels', 'thumbnail']
-
-    def get_queryset(self):
-        return self.model.objects.existing()
+    queryset = Dive.objects.existing()
+    template_name = 'diving/dive_list.html'
 
 
 class DiveJsonList(MapEntityJsonList, DiveList):
