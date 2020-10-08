@@ -21,8 +21,9 @@ AUTOLOGIN_IPS = [
     socket.gethostbyname(CAPTURE_SERVER_HOST),
 ]
 for interface in interfaces():
-    for link in ifaddresses(interface)[AF_INET]:
-        AUTOLOGIN_IPS.append(link['addr'])
+    for link in ifaddresses(interface).get(AF_INET, []):
+        if link:
+            AUTOLOGIN_IPS.append(link['addr'])
 
 
 def get_internal_user():
